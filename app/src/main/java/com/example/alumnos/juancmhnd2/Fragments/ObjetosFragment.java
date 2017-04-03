@@ -1,0 +1,71 @@
+package com.example.alumnos.juancmhnd2.Fragments;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import com.example.alumnos.juancmhnd2.Adapter.ObjetosAdapter;
+import com.example.alumnos.juancmhnd2.ObjectosInfo;
+import com.example.alumnos.juancmhnd2.ObjetosActivity;
+import com.example.alumnos.juancmhnd2.R;
+import com.example.alumnos.juancmhnd2.bein.ObjetosBean;
+
+import java.util.ArrayList;
+
+
+    public class ObjetosFragment extends Fragment implements AdapterView.OnItemClickListener {
+        private ListView listobjetos;
+        private ArrayList<ObjetosBean> objetos;
+        private static final String OBJETOS_KEY = "OBJETOS_KEY";
+
+
+        public ObjetosFragment() {
+            // Required empty public constructor
+        }
+
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.fragment_objetos, container, false);
+            listobjetos = (ListView) view.findViewById(R.id.listaObjetos);
+            objetos = ObjectosInfo.getObjetos();
+            ObjetosAdapter adapter = new ObjetosAdapter(getActivity(), R.layout.item_objetos, objetos);
+            listobjetos.setAdapter(adapter);
+            listobjetos.setOnItemClickListener(this);
+
+            return view;
+        }
+
+
+        @Override
+        public void onAttach(Context context) {
+            super.onAttach(context);
+
+        }
+
+        @Override
+        public void onDetach() {
+            super.onDetach();
+
+        }
+
+        public static ObjetosFragment newInstance() {//New instance: lo que nos permite inicializar y configurar una nuevo Fragment sin tener que llamar a su constructor y métodos setter adicionales.
+            return new ObjetosFragment();
+
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            ObjetosBean objetosBean = objetos.get(i);
+            Intent intent = new Intent(getActivity(), ObjetosActivity.class);//Un Intent es un objeto que proporciona enlace de tiempo de ejecución entre componentes separados (como dos actividades).
+            intent.putExtra(OBJETOS_KEY, objetosBean);
+            startActivity(intent);
+        }
+    }
